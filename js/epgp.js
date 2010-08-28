@@ -73,8 +73,11 @@
     var showEpgp = function(){
      // Header Data
      var base = $this.data('data').namespaces.log.profiles[o.guild],
-         vars = base.snapshot.guild_info.split('\n'), // @BASE_GP:1000\n@MIN_EP:1000\n@DECAY_P:15
-         basegp = parseInt(vars[0].split(':')[1],10),
+         // base.snapshot.guild_info example strings:
+         // @BASE_GP:1000\n@MIN_EP:1000\n@DECAY_P:15
+         // @FC\n@DECAY_P:15\n@MIN_EP: 10\n@BASE_GP:300
+         vars = base.snapshot.guild_info.replace(/\n/g,':').split(':'),
+         basegp = parseInt(vars[$.inArray('@BASE_GP',vars) + 1],10) || 0,
          date = new Date(base.snapshot.time * 1000),  // Date stored in lua as seconds (not milliseconds)
          hours = date.getHours(),
          ampm = (hours > 12) ? 'PM' : 'AM';
@@ -82,8 +85,8 @@
 
      // Update header
      $this.find('.date').html( date.toDateString() + ' ' + hours + ':' + date.getMinutes() + ' ' + ampm );
-     $this.find('.decay').html(vars[2].split(':')[1] + '%');
-     $this.find('.min').html(vars[1].split(':')[1]);
+     $this.find('.decay').html(vars[$.inArray('@DECAY_P',vars)+1] + '%');
+     $this.find('.min').html(vars[$.inArray('@MIN_EP',vars)+1]);
      $this.find('.base').html(basegp);
      $this.find('.extras').html(o.extras);
 
