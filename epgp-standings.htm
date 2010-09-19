@@ -7,7 +7,7 @@
 
 <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
 <script type="text/javascript" src="js/jatt.min.js"></script>
-<script type="text/javascript" src="js/epgp.js"></script>
+<script type="text/javascript" src="js/epgp.min.js"></script>
 
 <!-- Choose from epgp-dark.css, epgp-light.css or make your own -->
 <link type="text/css" href="css/epgp-dark.css" rel="stylesheet" >
@@ -20,6 +20,8 @@ jQuery(document).ready(function($){
   guild            : 'Fallout',         // Guild name (include captial letters and any spaces in the name)
   startEpgpHistory : 7,                 // EPGP Standings History - initial number of days to show prior to snapshot 
   startLootHistory : 7,                 // Loot History - initial number of days to show prior to snapshot 
+  addSliders       : true,              // Add slider to adjust the changes in ep/gp (green & red values) or the loot history popup
+  maxHistory       : 30,                // Slider max number of days.
   extras           : '100%',            // Extras - set here because it's not in the lua
   lootIcon         : 'images/plus.gif', // Icon to hover over to see a list of recent loot, styled in the css
   sort             : [3,1]              // sort table by 3rd column (PR column, 0 indexed) in descending order (1).
@@ -34,44 +36,7 @@ jQuery(document).ready(function($){
 });
 </script>
 </head><body>
-<div id="epgp">
 
- <div class="header">
-  <div class="sliders">
-   <div>
-    EPGP ( <span class="count"></span> days from snapshot )<br>
-    <div class="slider"></div>
-   </div>
-   <br>
-   <div>
-    Loot ( <span class="count"></span> days from snapshot )<br>
-    <div class="slider"></div>
-   </div>
-  </div>
-
-  Date: <span class="date"></span>
-  <br><br>
-  Decay: <span class="decay"> </span>
-  BaseGP: <span class="base"> </span>
-  MinEP: <span class="min"> </span>
-  Extras: <span class="extras"> </span>
-  <br>
- </div>
-
- <table class="epgp">
-  <thead>
-  <tr class="title">
-   <th class="name class">Name</th>
-   <th class="ep">EP</th>
-   <th class="gp">GP</th>
-   <th class="pr">PR</th>
-   <th class="lastitem">Last Item</th>
-  </tr>
- </thead>
- <tbody>
- </tbody>
- </table>
-
-</div>
+<div id="epgp"></div>
 
 </body></html>

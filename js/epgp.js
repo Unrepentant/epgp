@@ -5,6 +5,7 @@
  * Author: Rob G, aka Mottie (mottie.guildportal.com)
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
+ * v1.1 9/19/2010 Internalized standings html & added slider options
  * v1.0 8/25/2010 Original version, posted to github
  */
 
@@ -83,6 +84,24 @@
          ampm = (hours > 12) ? 'PM' : 'AM';
          hours = (hours > 12) ? hours-12 : hours;
 
+     // Add header & table
+     t = '<div class="header">Date: <span class="date"></span><br><br>Decay: <span class="decay"> </span>' +
+      ' BaseGP: <span class="base"> </span> MinEP: <span class="min"> </span> Extras: <span class="extras"> </span>' +
+      '</div><br>' +
+      '<table class="epgp"><thead><tr class="title">' +
+      '<th class="name class">Name</th><th class="ep">EP</th><th class="gp">GP</th><th class="pr">PR</th><th class="lastitem">Last Item</th></tr>' +
+      '</thead><tbody></tbody></table>';
+     $this.html(t);
+
+     // Add Slider
+     if (o.addSliders) {
+      t = '<div class="sliders">' +
+       '<div>EPGP ( <span class="count"></span> days from snapshot )<br><div class="slider"></div></div><br>' +
+       '<div>Loot ( <span class="count"></span> days from snapshot )<br><div class="slider"></div></div>' +
+       '</div>';
+      $this.find('.header').prepend(t);
+     }
+
      // Update header
      $this.find('.date').html( date.toDateString() + ' ' + hours + ':' + date.getMinutes() + ' ' + ampm );
      $this.find('.decay').html(vars[$.inArray('@DECAY_P',vars)+1] + '%');
@@ -134,41 +153,43 @@
       });
 
       // Initialize EPGP & loot sliders
-      $this.find('.slider')
-       .slider({
-        min   : 1,
-        max   : 30,
-        step  : 1,
-        slide : function(e,ui){
-         $(this).data('value',ui.value);
-         $(this).parent().find('.count').html(ui.value);
-         var c, u = update(base); // u[ep, gp, lootHx, lastItem];
-         $this.find('tbody tr').each(function(){
-          n = $(this).find('.name span').html();
-          num = Math.round(u[0][n]) || '';
-          c = (num === 0 || num === '') ? '' : (num < 0) ? n2 : p;
-          $(this).find('.ep .diff').removeClass(n2 + ' ' + p).addClass(c).html(num);
-
-          num = Math.round(u[1][n]) || '';
-          c = (num === 0 || num === '') ? '' : (num < 0) ? n2 : p;
+      if (o.addSliders) {
+       $this.find('.slider')
+        .slider({
+         min   : 1,
+         max   : o.maxHistory,
+         step  : 1,
+         slide : function(e,ui){
+          $(this).data('value',ui.value);
+          $(this).parent().find('.count').html(ui.value);
+          var c, u = update(base); // u[ep, gp, lootHx, lastItem];
+          $this.find('tbody tr').each(function(){
+           n = $(this).find('.name span').html();
+           num = Math.round(u[0][n]) || '';
+           c = (num === 0 || num === '') ? '' : (num < 0) ? n2 : p;
+           $(this).find('.ep .diff').removeClass(n2 + ' ' + p).addClass(c).html(num);
+ 
+           num = Math.round(u[1][n]) || '';
+            c = (num === 0 || num === '') ? '' : (num < 0) ? n2 : p;
           $(this).find('.gp .diff').removeClass(n2 + ' ' + p).addClass(c).html(num);
-
-          // update tooltip
-          $(this).find('.lastitem img').attr('title', u[2][n]);
-         });
-        }
-       });
-       // Initial slider data & display
-       $this.find('.sliders')
-        .find('.slider:first')
-         .slider('option', 'value', o.startEpgpHistory )
-         .data('value', o.startEpgpHistory).end()
-        .find('.count:first').html(o.startEpgpHistory).end()
-        .find('.slider:last')
-         .slider('option', 'value', o.startLootHistory )
+  
+           // update tooltip
+           $(this).find('.lastitem img').attr('title', u[2][n]);
+          });
+         }
+        });
+        // Initial slider data & display
+        $this.find('.sliders')
+         .find('.slider:first')
+          .slider('option', 'value', o.startEpgpHistory )
+          .data('value', o.startEpgpHistory).end()
+         .find('.count:first').html(o.startEpgpHistory).end()
+         .find('.slider:last')
+           .slider('option', 'value', o.startLootHistory )
          .data('value', o.startLootHistory).end()
-        .find('.count:last').html(o.startLootHistory);
-     }
+         .find('.count:last').html(o.startLootHistory);
+       }
+      }
     };
 
     // Show Loot Only
@@ -254,22 +275,24 @@
 
   $.fn.epgp.defaults = {
    // EPGP Standings table options
-   epgpfile         : 'epgp.lua', // epgp.lua file name
-   guild            : 'Fallout',  // Guild name (include captial letters and any spaces in the name)
-   startEpgpHistory : 7,          // EPGP Standings History - initial number of days to show prior to snapshot
-   startLootHistory : 7,          // Loot History - initial number of days to show prior to snapshot
-   extras           : '100%',     // Extras - set here because it's not in the lua
+   epgpfile         : 'epgp.lua',        // epgp.lua file name
+   guild            : 'Fallout',         // Guild name (include captial letters and any spaces in the name)
+   startEpgpHistory : 7,                 // EPGP Standings History - initial number of days to show prior to snapshot
+   startLootHistory : 7,                 // Loot History - initial number of days to show prior to snapshot
+   addSliders       : true,              // Add slider to adjust the changes in ep/gp (green & red values) or the loot history popup
+   maxHistory       : 30,                // Slider max number of days.
+   extras           : '100%',            // Extras - set here because it's not in the lua.
    lootIcon         : 'images/plus.gif', // Icon to hover over to see a list of recent loot, styled in the css
-   sort             : [3,1],      // sort table by 3rd column (PR column, 0 indexed) in descending order (1).
+   sort             : [3,1],             // sort table by 3rd column (PR column, 0 indexed) in descending order (1).
 
    // Loot table only options (includes startLootHistory above)
-   lootOnly         : false,      // if true, will only display a loot history table
-   raidTime         : 4,          // Approximate raid time in hours (substracted from snapshot time to ensure loot drops are included)
-   fixClass         : []          // fix class for toon not in the database (alt in a different guild), use as follows:
-                                  // add a name: var x = []; x['Toon Name'] = 'class';
-                                  // 'Toon Name' should be the exact name you see in the table (include capitals & spaces)
-                                  // class = character class or defined CSS class (so you can add any color)
-                                  // initialize script $(selector).epgp({ fixClass: x });
+   lootOnly         : false,             // if true, will only display a loot history table
+   raidTime         : 4,                 // Approximate raid time in hours (substracted from snapshot time to ensure loot drops are included)
+   fixClass         : []                 // fix class for toon not in the database (alt in a different guild), use as follows:
+                                         // add a name: var x = []; x['Toon Name'] = 'class';
+                                         // 'Toon Name' should be the exact name you see in the table (include capitals & spaces)
+                                         // class = character class or defined CSS class (so you can add any color)
+                                         // initialize script $(selector).epgp({ fixClass: x });
   };
 
 })(jQuery);
