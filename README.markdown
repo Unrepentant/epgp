@@ -43,6 +43,7 @@ Standings Table / Loot Table:
 **Changelog**
 
 Version 1.1 (9/19/2010)
+
 * Internalized Standings header & table HTML and sliders
 * Added slider options - addSliders & maxHistory
 
