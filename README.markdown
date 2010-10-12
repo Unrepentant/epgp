@@ -1,4 +1,4 @@
-**Features**
+**Features** ([demo][1])
 
 * Parse epgp.lua file created by the World of Warcraft EPGP addon 
   (http://code.google.com/p/epgp/) using javascript/jQuery only.
@@ -49,3 +49,5 @@ Version 1.1 (9/19/2010)
 Version 1.0 (8/25/2010)
 
 * Epgp script posted on github.
+
+ [1]: http://mottie.github.com/epgp/
