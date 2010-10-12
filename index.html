@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
-<title>EPGP Standings</title>
+<title>EPGP</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script>
@@ -12,9 +12,15 @@
 <!-- Choose from epgp-dark.css, epgp-light.css or make your own -->
 <link type="text/css" href="css/epgp-dark.css" rel="stylesheet" >
 
+<!-- demo styling -->
+<style type="text/css">
+h2, h3 { text-align: center; }
+</style>
+
 <script type="text/javascript">
 jQuery(document).ready(function($){
 
+ // *** Standings ***
  $('#epgp').epgp({
   epgpfile         : 'epgp.lua',        // epgp.lua file name
   guild            : 'Fallout',         // Guild name (include captial letters and any spaces in the name)
@@ -27,6 +33,28 @@ jQuery(document).ready(function($){
   sort             : [3,1]              // sort table by 3rd column (PR column, 0 indexed) in descending order (1).
  });
 
+ // *** Loot ***
+ /* Add missing character class (e.g. outside of guild) or even override a character class, as follows:
+     var fix = [];
+     fix['Name'] = 'class';
+     fix['Another Toon'] = 'class2';
+
+   'Name' should be the exact name you see in the table (include capitals & spaces)
+   'class' = character class or defined CSS class (so you can add any color) 
+ */
+ var fix = [];
+ fix['Guild Bank'] = 'MAge'; // Unknown class
+// fix['Jomage'] = 'rogue'; // over-ride Jomage's class
+
+ $('#epgploot').epgp({
+  epgpfile         : 'epgp.lua', // epgp.lua file name
+  guild            : 'Fallout',  // Guild name (include captial letters and any spaces in the name)
+  startLootHistory : 2,          // Loot History - initial number of days to show prior to snapshot
+  lootOnly         : true,       // if true, will only display a loot history table
+  raidTime         : 4,          // Approximate raid time in hours (substracted from snapshot time to ensure loot drops are included)
+  fixClass         : fix         // fix class for toon not in the database (alt in a different guild)
+ });
+
  /* tooltip script - http://github.com/Mottie/Jatt */
  $.jatt({
   direction: 's',
@@ -36,7 +64,13 @@ jQuery(document).ready(function($){
 });
 </script>
 </head><body>
+<h2><a href="http://github.com/Mottie/epgp">EPGP</a></h2>
 
+<h3>Epgp Loot</h3>
+<div id="epgploot"></div>
+
+<br><hr>
+<h3>Epgp Standings</h3>
 <div id="epgp"></div>
 
 </body></html>
