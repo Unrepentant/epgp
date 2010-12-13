@@ -16,20 +16,29 @@ jQuery(document).ready(function($){
      fix['Name'] = 'class';
      fix['Another Toon'] = 'class2';
 
+    or use this format:
+
+     var fix = {
+      'Name' : 'class',
+      'Another Toon' : 'class2'
+     };
+
    'Name' should be the exact name you see in the table (include capitals & spaces)
    'class' = character class or defined CSS class (so you can add any color) 
  */
- var fix = [];
- fix['Guild Bank'] = 'MAge'; // Unknown class
-// fix['Jomage'] = 'rogue'; // over-ride Jomage's class
+ var fix = {
+  'Gildenbank' : 'priest'
+ };
 
  $('#epgploot').epgp({
   epgpfile         : 'epgp.lua', // epgp.lua file name
-  guild            : 'Fallout',  // Guild name (include captial letters and any spaces in the name)
+  guild            : 'Wolfpax',  // Guild name (include captial letters and any spaces in the name)
   startLootHistory : 2,          // Loot History - initial number of days to show prior to snapshot
   lootOnly         : true,       // if true, will only display a loot history table
   raidTime         : 4,          // Approximate raid time in hours (substracted from snapshot time to ensure loot drops are included)
   fixClass         : fix         // fix class for toon not in the database (alt in a different guild)
+ }, {
+  wowhead          : 'de'
  });
 
 });
