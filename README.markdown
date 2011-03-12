@@ -1,4 +1,4 @@
-**Features** ([demo][1])
+##Features ([demo][1])
 
 * Parse epgp.lua file created by the World of Warcraft EPGP addon 
   (http://code.google.com/p/epgp/) using javascript/jQuery only.
@@ -9,9 +9,9 @@
 * Choose from either a dark or light stylesheet, or make your own.
 * Language options added to allow easy modification.
 
-**Usage & Options (defaults)**
+##Usage & Options (defaults)
 
-Script:
+###Script:
 
     // Optional Language Options
     var languageOptions = {
@@ -59,13 +59,18 @@ Script:
                                            // initialize script $(selector).epgp({ fixClass: x });
     }, languageOptions);                   // remove ", languageOptions" if you aren't using them
 
-HTML:
+###HTML:
 
 Standings Table / Loot Table (use unique ID if both are on the same page):
 
     <div id="epgp"></div>
 
-**Changelog**
+##Changelog
+
+Version 1.3 (3/11/2011)
+
+* Updated to work with jQuery 1.5+.
+* Fixed PR column sorting.
 
 Version 1.2 (12/13/2010)
 
