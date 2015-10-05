@@ -37,7 +37,7 @@
     $('#epgp').epgp({
      // EPGP Standings table options
      epgpfile         : 'epgp.lua',        // epgp.lua file name
-     guild            : 'Wolfpax',         // Guild name (include captial letters and any spaces in the name)
+     guild            : 'Wolfpax',         // Guild name (include capital letters and any spaces in the name)
      startEpgpHistory : 7,                 // EPGP Standings History - initial number of days to show prior to snapshot
      startLootHistory : 7,                 // Loot History - initial number of days to show prior to snapshot
      addSliders       : true,              // Add slider to adjust the changes in ep/gp (green & red values) or the loot history popup
